@@ -5,37 +5,50 @@ version: "0.19.0"
 header-from: "_header.md"
 footer-from: ""
 
+recursive:
+  enabled: false
+  path: modules
+  include-main: true
+
 sections:
   hide: []
   show: []
 
 content: |-
   {{ .Header }}
+
   {{ .Requirements }}
+
   {{ .Providers }}
+
   # Examples
+
   ```hcl
-  {{ include "examples/variables.tf" }}
-  {{ include "examples/main.tf" }}
+  # example variables.tf
+  {{ include "examples/default-name/variables.tf" }}
+  
+  # example main.tf
+  {{ include "examples/default-name/main.tf" }}
   ```
+
   {{ .Resources }}
+
   {{ .Inputs }}
+
   {{ .Outputs }}
 
+
 output:
-file: README.md
-mode: replace
-template: |-
-  <!-- BEGIN_TF_DOCS -->
-  {{.Content}} 
-  <!-- END_TF_DOCS -->
+  file: README.md
+  mode: inject
+  template: |-
+    <!-- BEGIN_TF_DOCS -->
+    {{ .Content }}
+    <!-- END_TF_DOCS -->
 
 sort:
   enabled: true
   by: required
-
-recursive:
-  enabled: true
 
 settings:
   anchor: true
