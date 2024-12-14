@@ -1,3 +1,4 @@
+<!-- BEGIN_TF_DOCS -->
 # Azure Resource Group Terraform Module
 
 ## Overview
@@ -43,7 +44,6 @@ Resources in a resource group can be interdependent but don't have to be. A reso
 Azure Resource Manager (ARM) templates allow you to define the infrastructure and configuration for resources in a resource group as code.
 These templates help in consistent deployments and enable Infrastructure as Code (IaC) practices.
 
-
 ### Use Cases:
 
 Application Development: Group all resources related to a development, testing, or production environment.
@@ -72,6 +72,73 @@ Resource Group
    ├── SQL Database (DB1)
    └── Virtual Network (VNet1)
 
-
 ## Links
 [Microsoft Documentation](https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/overview#resource-groups)
+
+## Requirements
+
+| Name | Version |
+|------|---------|
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | ~> 1.0 |
+| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | ~> 4.0 |
+| <a name="requirement_random"></a> [random](#requirement\_random) | 3.6.3 |
+
+## Providers
+
+| Name | Version |
+|------|---------|
+| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 4.13.0 |
+| <a name="provider_random"></a> [random](#provider\_random) | 3.6.3 |
+
+# Examples
+
+```hcl
+# example variables.tf
+variable "env" {
+  description = "The environment of the resource group."
+  type        = string
+  default     = "dev"
+}
+
+variable "location" {
+  description = "The location the resource group should be deployed"
+  type        = string
+  default     = "northeurope"
+}
+
+# example main.tf
+module "default_name_rg" {
+  source   = "../.."
+  env      = var.env
+  location = var.location
+  tags = {
+    environment = var.env
+  }
+}
+```
+
+## Resources
+
+| Name | Type |
+|------|------|
+| [azurerm_resource_group.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
+| [random_id.name](https://registry.terraform.io/providers/hashicorp/random/3.6.3/docs/resources/id) | resource |
+
+## Inputs
+
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| <a name="input_location"></a> [location](#input\_location) | (Required) The Azure Region where the Resource Group should exist. | `string` | n/a | yes |
+| <a name="input_env"></a> [env](#input\_env) | (Required) The environment of the resource group, prd, tst, dev. Required for default naming. | `string` | `null` | no |
+| <a name="input_managed_by"></a> [managed\_by](#input\_managed\_by) | (Optional) The ID of the resource or application that manages this Resource Group. | `string` | `null` | no |
+| <a name="input_name"></a> [name](#input\_name) | (Required) The Name which should be used for this Resource Group. | `any` | `null` | no |
+| <a name="input_tags"></a> [tags](#input\_tags) | (Optional) A mapping of tags which should be assigned to the Resource Group. | `map(string)` | `{}` | no |
+
+## Outputs
+
+| Name | Description |
+|------|-------------|
+| <a name="output_id"></a> [id](#output\_id) | The ID for this Resource Group. |
+| <a name="output_location"></a> [location](#output\_location) | The ID for this Resource Group. |
+| <a name="output_name"></a> [name](#output\_name) | The Name for this Resource Group. |
+<!-- END_TF_DOCS -->
